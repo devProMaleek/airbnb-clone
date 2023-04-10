@@ -32,7 +32,10 @@ const RegisterModal = (props: Props) => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
     try {
-      await axios.post('/api/auth/register', data);
+      const response = await axios.post('/api/register', data);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      }
       onClose();
     } catch (error: any) {
       toast.error("Couldn't register you");
