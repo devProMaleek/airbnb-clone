@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from './components/Navbar/Navbar';
 import RegisterModal from './components/Modals/RegisterModal';
 import ToasterProvider from './providers/ToasterProvider';
+import LoginModal from './components/Modals/LoginModal';
 
 export const metadata = {
   title: 'Airbnb Clone',
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={font.className}>
           <ToasterProvider />
+          <LoginModal />
           <RegisterModal />
           <Navbar />
         {children}
