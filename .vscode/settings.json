@@ -1,4 +1,8 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "yaml.schemas": {
+    "file:///c%3A/Users/milik/.vscode/extensions/atlassian.atlascode-2.10.12/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
+    "https://json.schemastore.org/github-workflow.json": "file:///c%3A/Users/milik/Web%20Projects/NextJS-Projects/airbnb-clone/.github/workflows/deploy.yml"
+  }
 }
