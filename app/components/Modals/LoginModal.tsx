@@ -89,7 +89,7 @@ const LoginModal = (props: Props) => {
 
         <div className="text-neutral-500 text-center mt-4 font-light">
           <div className="justify-center flex flex-row items-center gap-2">
-            <div>Don't have an account?</div>
+            <div>Don&apos;t have an account?</div>
             <div onClick={onClose} className="text-rose-500 cursor-pointer hover:underline">
               Sign Up
             </div>
