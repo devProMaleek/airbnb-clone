@@ -27,6 +27,18 @@ jobs:
       - uses: dkhmelenko/autoapproval@v1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          build: npm run build
+          start: npm start
+          working-directory: tests/component-tests
+          component: true
   vercel:
     runs-on: ubuntu-latest
     name: "Deploy application"
