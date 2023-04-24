@@ -37,7 +37,6 @@ jobs:
         with:
           build: npm run build
           start: npm start
-          working-directory: tests/component-tests
           component: true
   vercel:
     runs-on: ubuntu-latest
