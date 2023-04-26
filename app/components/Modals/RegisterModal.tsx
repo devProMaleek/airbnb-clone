@@ -119,4 +119,5 @@ const RegisterModal = (props: Props) => {
   );
 };
 
+
 export default RegisterModal;
