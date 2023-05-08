@@ -54,6 +54,11 @@ const LoginModal = (props: Props) => {
     });
   };
 
+  const toggleModal = useCallback(() => {
+    onClose();
+    registerOnOpen();
+  }, [onClose, registerOnOpen]);
+
   const bodyContent = (
     <>
       <div className="flex flex-col gap-4">
@@ -84,13 +89,25 @@ const LoginModal = (props: Props) => {
     <>
       <div className="flex flex-col gap-4 mt-3">
         <hr />
-        <Button outline label="Continue with Google" icon={FcGoogle} onClick={() => signIn('google')} disabled={isLoading} />
-        <Button outline label="Continue with GitHub" icon={AiFillGithub} onClick={() => signIn('github')} disabled={isLoading} />
+        <Button
+          outline
+          label="Continue with Google"
+          icon={FcGoogle}
+          onClick={() => signIn('google')}
+          disabled={isLoading}
+        />
+        <Button
+          outline
+          label="Continue with GitHub"
+          icon={AiFillGithub}
+          onClick={() => signIn('github')}
+          disabled={isLoading}
+        />
 
         <div className="text-neutral-500 text-center mt-4 font-light">
           <div className="justify-center flex flex-row items-center gap-2">
             <div>Don&apos;t have an account?</div>
-            <div onClick={onClose} className="text-rose-500 cursor-pointer hover:underline">
+            <div onClick={toggleModal} className="text-rose-500 cursor-pointer hover:underline">
               Sign Up
             </div>
           </div>

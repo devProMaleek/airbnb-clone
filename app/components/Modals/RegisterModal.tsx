@@ -12,6 +12,7 @@ import Input from '../Inputs/Input';
 import { toast } from 'react-hot-toast';
 import Button from '../Button';
 import { signIn } from 'next-auth/react';
+import useLoginModal from '@/app/hooks/useLoginModal';
 
 type Props = {};
 
@@ -23,6 +24,7 @@ const defaultValues = {
 
 const RegisterModal = (props: Props) => {
   const { isOpen, onOpen, onClose } = useRegisterModal();
+  const { isOpen: loginIsOpen, onOpen: loginOnOpen, onClose: loginOnClose } = useLoginModal();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
@@ -44,6 +46,11 @@ const RegisterModal = (props: Props) => {
       setIsLoading(false);
     }
   };
+
+  const toggleModal = useCallback(() => {
+    onClose();
+    loginOnOpen();
+  }, [onClose, loginOnOpen]);
 
   const bodyContent = (
     <>
@@ -94,7 +101,7 @@ const RegisterModal = (props: Props) => {
         <div className="text-neutral-500 text-center mt-4 font-light">
           <div className="justify-center flex flex-row items-center gap-2">
             <div>Already have an account?</div>
-            <div onClick={onClose} className="text-rose-500 cursor-pointer hover:underline">
+            <div onClick={toggleModal} className="text-rose-500 cursor-pointer hover:underline">
               Log In
             </div>
           </div>
@@ -118,6 +125,5 @@ const RegisterModal = (props: Props) => {
     </>
   );
 };
-
 
 export default RegisterModal;
