@@ -5,3 +5,11 @@ export type SafeUser = Omit<User, 'createdAt' | 'updatedAt' | 'emailVerified'> &
   updatedAt: string;
   emailVerified: string | null;
 };
+
+export type CountrySelectValue = {
+  flag: string;
+  label: string;
+  latlng: number[];
+  region: string;
+  value: string;
+}
