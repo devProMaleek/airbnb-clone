@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { ChangeEvent, useMemo, useState } from 'react';
 import Modal from './Modal';
 import useRentModal from '@/app/hooks/useRentModal';
 import Heading from '../Heading';
@@ -122,6 +122,22 @@ const RentModal = (props: Props) => {
     return 'Back';
   }, [step]);
 
+  const formatInputValue = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    let value = inputValue.replace(/,/g, ''); // Remove existing commas
+    value = value.replace(/\D/g, ''); // Remove non-digit characters
+
+    const parts = value.split('.');
+    const wholeNumber = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    let formattedValue = wholeNumber;
+    if (parts.length === 2) {
+      formattedValue += '.' + parts[1];
+    }
+
+    setValue('price', formattedValue, { shouldDirty: true, shouldValidate: true, shouldTouch: true });
+  };
+
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading title="Which of these best describes your place?" subtitle="Pick a category" />
@@ -216,7 +232,8 @@ const RentModal = (props: Props) => {
           id="price"
           label="Price"
           formatPrice
-          type="number"
+          type="text"
+          onChangeHandler={formatInputValue}
           disabled={isLoading}
           register={register}
           errors={errors}

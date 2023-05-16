@@ -8,6 +8,7 @@ type Props = {
   id: string;
   label: string;
   type?: string;
+  onChangeHandler?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   formatPrice?: boolean;
   required?: boolean;
@@ -15,7 +16,17 @@ type Props = {
   errors: FieldErrors;
 };
 
-const Input = ({ id, type = 'text', label, disabled, formatPrice, required, register, errors }: Props) => {
+const Input = ({
+  id,
+  type = 'text',
+  label,
+  disabled,
+  formatPrice,
+  onChangeHandler,
+  required,
+  register,
+  errors,
+}: Props) => {
   return (
     <>
       <div className="w-full relative">
@@ -24,6 +35,7 @@ const Input = ({ id, type = 'text', label, disabled, formatPrice, required, regi
           id={id}
           disabled={disabled}
           {...register(id, { required })}
+          onChange={onChangeHandler}
           placeholder=" "
           type={type}
           className={`peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed ${
