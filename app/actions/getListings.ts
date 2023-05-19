@@ -15,6 +15,6 @@ export default async function getListings() {
 
     return safeListings;
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 }
