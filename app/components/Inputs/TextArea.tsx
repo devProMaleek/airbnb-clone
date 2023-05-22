@@ -26,7 +26,7 @@ const TextArea = ({ id, label, placeholder, rows, cols, disabled, required, regi
         <textarea
           id={id}
           disabled={disabled}
-          style={{resize: 'none'}}
+          style={{ resize: 'none' }}
           {...register(id, { required })}
           placeholder={placeholder || ' '}
           className={`w-full p-2 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed pl-4

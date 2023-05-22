@@ -36,7 +36,7 @@ const Counter = ({ title, subtitle, value, onChange }: Props) => {
           >
             <AiOutlineMinus />
           </div>
-          <div className="font-light text-xl text-neutral-600">
+          <div className="text-xl font-light text-neutral-600">
             {value}
           </div>
           <div

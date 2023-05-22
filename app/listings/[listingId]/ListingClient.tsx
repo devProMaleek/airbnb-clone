@@ -6,8 +6,7 @@ import ListingInfo from '@/app/components/Listings/ListingInfo';
 import ListingReservation from '@/app/components/Listings/ListingReservation';
 import { categories } from '@/app/components/Navbar/Categories';
 import useLoginModal from '@/app/hooks/useLoginModal';
-import { SafeListing, SafeUser } from '@/app/types';
-import { Reservation } from '@prisma/client';
+import { SafeListing, SafeUser,SafeReservation } from '@/app/types';
 import axios from 'axios';
 import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns';
 import { useRouter } from 'next/navigation';
@@ -23,7 +22,7 @@ const initialDateRange = {
 
 type Props = {
   listing: SafeListing & { user: SafeUser };
-  reservations?: Reservation[];
+  reservations?: SafeReservation[];
   currentUser?: SafeUser | null;
 };
 
@@ -34,7 +33,7 @@ const ListingClient = ({ listing, reservations = [], currentUser }: Props) => {
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
 
-    reservations.forEach((reservation) => {
+    reservations.forEach((reservation: any) => {
       const range = eachDayOfInterval({
         start: new Date(reservation.startDate),
         end: new Date(reservation.endDate),
@@ -57,25 +56,23 @@ const ListingClient = ({ listing, reservations = [], currentUser }: Props) => {
 
     setIsLoading(true);
 
-    const data = {
+    axios.post('/api/reservations', {
       totalPrice,
       startDate: dateRange.startDate,
       endDate: dateRange.endDate,
-      listingId: listing?.id,
-    };
-
-    try {
-      const response = axios.post('/api/reservations', data);
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        setDateRange(initialDateRange);
-        router.refresh();
-      }
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
+      listingId: listing?.id
+    })
+    .then(() => {
+      toast.success('Listing reserved!');
+      setDateRange(initialDateRange);
+      router.push('/trips');
+    })
+    .catch(() => {
+      toast.error('Something went wrong.');
+    })
+    .finally(() => {
       setIsLoading(false);
-    }
+    })
   }, [totalPrice, dateRange, listing?.id, currentUser, onOpen, router]);
 
   useEffect(() => {
