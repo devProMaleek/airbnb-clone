@@ -29,8 +29,8 @@ const Input = ({
 }: Props) => {
   return (
     <>
-      <div className="w-full relative">
-        {formatPrice && <TbCurrencyNaira size={25} className="text-neutral-700 absolute top-6 left-2" />}
+      <div className="relative w-full">
+        {formatPrice && <TbCurrencyNaira size={25} className="absolute text-neutral-700 top-6 left-2" />}
         <input
           id={id}
           disabled={disabled}
