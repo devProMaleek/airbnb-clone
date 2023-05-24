@@ -11,7 +11,7 @@ import ListingCard from '../components/Listings/ListingCard';
 
 type Props = {
   reservations: SafeReservation[];
-  currentUser: SafeUser;
+  currentUser: SafeUser | null;
 };
 
 const TripsClient = ({ reservations, currentUser }: Props) => {
