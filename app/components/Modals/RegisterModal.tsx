@@ -40,6 +40,7 @@ const RegisterModal = (props: Props) => {
         toast.success(response.data.message);
       }
       onClose();
+      loginOnOpen();
     } catch (error: any) {
       toast.error("Couldn't register you");
     } finally {
@@ -98,10 +99,10 @@ const RegisterModal = (props: Props) => {
           disabled={isLoading}
         />
 
-        <div className="text-neutral-500 text-center mt-4 font-light">
-          <div className="justify-center flex flex-row items-center gap-2">
+        <div className="mt-4 font-light text-center text-neutral-500">
+          <div className="flex flex-row items-center justify-center gap-2">
             <div>Already have an account?</div>
-            <div onClick={toggleModal} className="text-rose-500 cursor-pointer hover:underline">
+            <div onClick={toggleModal} className="cursor-pointer text-rose-500 hover:underline">
               Log In
             </div>
           </div>
