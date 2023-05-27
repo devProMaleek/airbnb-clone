@@ -87,7 +87,7 @@ const ListingClient = ({ listing, reservations = [], currentUser }: Props) => {
         setTotalPrice(listing.price);
       }
     }
-  }, [dateRange]);
+  }, [dateRange, listing.price]);
 
   const category = useMemo(() => {
     return categories.find((item) => item.label === listing.category);
