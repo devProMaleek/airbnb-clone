@@ -146,7 +146,6 @@ const RentModal = (props: Props) => {
           <div key={index} className="col-span-1">
             <CategoryInput
               onClick={(category) => {
-                console.log(category);
                 setCustomValue('category', category);
               }}
               selected={category === item.label}
