@@ -37,7 +37,7 @@ const SearchModal = (props: Props) => {
     key: 'selection',
   });
 
-  const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), []);
+  const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), [location]);
 
   const onBack = useCallback(() => {
     setStep((value) => value - 1);
