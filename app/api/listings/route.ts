@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       bathroomCount,
       guestCount,
       locationValue: location.value,
-      price: parseInt(price, 10),
+      price: parseInt(price.replace(/,/g, ""), 10),
       userId: currentUser.id,
     },
   });
