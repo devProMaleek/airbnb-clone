@@ -47,9 +47,9 @@ const UserMenu = ({ currentUser }: Props) => {
           className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row gap-3 items-center rounded-full transition cursor-pointer hover:shadow-md"
         >
           <AiOutlineMenu />
-          <div className="hidden md:block">
+          {currentUser && (<div className="hidden md:block">
             <Avatar src={currentUser?.image} />
-          </div>
+          </div>)}
         </div>
       </div>
 
