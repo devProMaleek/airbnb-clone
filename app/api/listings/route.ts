@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/libs/prismadb';
 import getCurrentUser from '@/app/actions/getCurrentUser';
 
+export async function GET(request: NextRequest) {
+  const listing = await prisma.listing.findMany({
+    where: {},
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return NextResponse.json({ listing, message: 'Successfully fetched all listings' });
+}
+
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
 
@@ -27,7 +38,7 @@ export async function POST(request: Request) {
       bathroomCount,
       guestCount,
       locationValue: location.value,
-      price: parseInt(price.replace(/,/g, ""), 10),
+      price: parseInt(price.replace(/,/g, ''), 10),
       userId: currentUser.id,
     },
   });
