@@ -2,6 +2,7 @@ import prisma from '@/app/libs/prismadb';
 
 export interface IListingsParams {
   userId?: string;
+  price?: string;
   guestCount?: number;
   bathroomCount?: number;
   roomCount?: number;
@@ -13,7 +14,7 @@ export interface IListingsParams {
 
 export default async function getListings(params: IListingsParams) {
   try {
-    const { userId, guestCount, bathroomCount, roomCount, startDate, endDate, locationValue, category } = params;
+    const { userId, guestCount, bathroomCount, roomCount, startDate, endDate, locationValue, category, price } = params;
 
     let query: any = {};
 
@@ -22,6 +23,11 @@ export default async function getListings(params: IListingsParams) {
     }
     if (category) {
       query.category = category;
+    }
+    if (price) {
+      query.price = {
+        lte: parseInt(price.replace(/,/g, ''), 10),
+      };
     }
     if (roomCount) {
       query.roomCount = {
