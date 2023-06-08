@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, ChangeEvent, useEffect } from 'react';
 import Modal from './Modal';
 import useSearchModal from '@/app/hooks/useSearchModal';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -12,6 +12,7 @@ import Heading from '../Heading';
 import CountrySelect from '../Inputs/CountrySelect';
 import Calendar from '../Inputs/Calendar';
 import Counter from '../Inputs/Counter';
+import PriceInput from '../Inputs/PriceInput';
 
 type Props = {};
 
@@ -19,6 +20,7 @@ enum STEPS {
   LOCATION = 0,
   DATE = 1,
   INFO = 2,
+  PRICE = 3,
 }
 
 const SearchModal = (props: Props) => {
@@ -27,8 +29,11 @@ const SearchModal = (props: Props) => {
   const params = useSearchParams();
 
   const [location, setLocation] = useState<CountrySelectValue>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const [step, setStep] = useState<STEPS>(STEPS.LOCATION);
   const [guestCount, setGuestCount] = useState<number>(1);
+  const [price, setPrice] = useState('1');
   const [bathroomCount, setBathroomCount] = useState<number>(1);
   const [roomCount, setRoomCount] = useState<number>(1);
   const [dateRange, setDateRange] = useState<Range>({
@@ -48,7 +53,7 @@ const SearchModal = (props: Props) => {
   }, []);
 
   const onSearch = useCallback(async () => {
-    if (step !== STEPS.INFO) {
+    if (step !== STEPS.PRICE) {
       return onNext();
     }
 
@@ -58,6 +63,7 @@ const SearchModal = (props: Props) => {
       currentQuery = queryString.parse(params.toString());
     }
 
+    setIsLoading(true);
     const updatedQuery: any = {
       ...currentQuery,
       locationValue: location?.value,
@@ -68,6 +74,10 @@ const SearchModal = (props: Props) => {
 
     if (dateRange.startDate) {
       updatedQuery.startDate = formatISO(dateRange.startDate);
+    }
+
+    if (price) {
+      updatedQuery.price = parseInt(price.replace(/,/g, ''), 10).toString();
     }
 
     if (dateRange.endDate) {
@@ -84,12 +94,12 @@ const SearchModal = (props: Props) => {
 
     setStep(STEPS.LOCATION);
     onClose();
-
+    setIsLoading(false);
     router.push(url);
-  }, [step, location, onClose, router, guestCount, roomCount, bathroomCount, dateRange, onNext, params]);
+  }, [step, location, onClose, router, guestCount, roomCount, bathroomCount, dateRange, onNext, params, price]);
 
   const actionLabel = useMemo(() => {
-    if (step === STEPS.INFO) {
+    if (step === STEPS.PRICE) {
       return 'Search';
     }
     return 'Next';
@@ -101,6 +111,39 @@ const SearchModal = (props: Props) => {
     }
     return 'Back';
   }, [step]);
+
+  const formatInputValue = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    let value = inputValue.replace(/,/g, ''); // Remove existing commas
+    value = value.replace(/\D/g, ''); // Remove non-digit characters
+
+    const parts = value.split('.');
+    const wholeNumber = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    let formattedValue = wholeNumber;
+    if (parts.length === 2) {
+      formattedValue += '.' + parts[1];
+    }
+
+    setPrice(formattedValue);
+  };
+
+  const validatePrice = (price: string) => {
+    const trimmedInput = price.trim();
+    if (trimmedInput.length === 0) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  useEffect(() => {
+    if (validatePrice(price)) {
+      setError(false);
+    } else {
+      setError(true);
+    }
+  }, [price]);
 
   let bodyContent = (
     <>
@@ -148,6 +191,26 @@ const SearchModal = (props: Props) => {
             subtitle="How many bathrooms do you need?"
             value={bathroomCount}
             onChange={(value) => setBathroomCount(value)}
+          />
+        </div>
+      </>
+    );
+  }
+
+  if (step === STEPS.PRICE) {
+    bodyContent = (
+      <>
+        <div className="flex flex-col gap-8">
+          <Heading title="What is your budget?" subtitle="Choose a plan that works for you" />
+          <PriceInput
+            id="price"
+            label="Price"
+            formatPrice
+            type="text"
+            value={price}
+            onChangeHandler={formatInputValue}
+            disabled={isLoading}
+            errors={error}
           />
         </div>
       </>
